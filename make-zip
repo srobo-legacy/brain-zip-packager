@@ -13,6 +13,12 @@ parser.add_argument('output',
 parser.add_argument("-w", "--wifi",
                     default="/etc/sr/wifi-keys.yaml",
                     help="YAML file to get wifi keys from")
+parser.add_argument('--project-name',
+                    default='SR Project',
+                    help='Project name (for display by the tablet)')
+parser.add_argument('--project-version',
+                    default='1',
+                    help='Project version (for display by the tablet)')
 
 args = parser.parse_args()
 
@@ -50,6 +56,12 @@ if os.path.exists(args.wifi) and args.team_tla is not None:
 
 if default_wifi:
     print "Default wifi keys used"
+
+# Create the project metadata
+with open(os.path.join(tmpd, "project.yaml"), "w") as f:
+    yaml.dump({'name': args.project_name,
+               'version': args.project_version,
+               'team': args.team_tla}, f)
 
 # Temporary directory for the zipfile to reside in
 ziptmpd = tempfile.mkdtemp( suffix="-pyenv" )
