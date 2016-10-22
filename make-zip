@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os, sys, tempfile, subprocess, shutil, re, argparse
+import io
 import yaml
 
 parser = argparse.ArgumentParser(description='Pack a robot.zip from user code.')
@@ -42,7 +43,7 @@ if os.path.exists(args.wifi) and args.team_tla is not None:
         y = yaml.load(f)
 
     if args.team_tla in y:
-        with open(os.path.join(tmpd, "wifi.yaml"), "w") as f:
+        with io.open(os.path.join(tmpd, "wifi.yaml"), "w", newline='\r\n') as f:
             yaml.dump( { "ssid": "robot-{}".format(args.team_tla),
                          "key": y[args.team_tla] }, f,
                        default_flow_style=False )
